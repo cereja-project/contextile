@@ -54,7 +54,8 @@ version = {attr = "contextile.__version__"}
 
 # Extras opcionais por framework
 [project.optional-dependencies]
-dev = []
+dev = ['pytest', 'pytest-cov', 'mcp>=1.0.0']
+test = ['pytest', 'pytest-cov']
 mcp = ["mcp>=1.0.0"]
 
 [project.urls]
