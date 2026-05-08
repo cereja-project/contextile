@@ -1,27 +1,77 @@
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "{{LIBRARY_NAME}}"
-version = "{{VERSION}}"
-description = "{{SHORT_DESCRIPTION}}"
+name = "contextile"
+dynamic = ["version"]
+description = "Manage, retrieve, and compact AI project instructions, lessons learned, and contextual rules for LLM workflows."
 authors = [
-    { name="{{AUTHOR_NAME}}", email="{{AUTHOR_EMAIL}}" }
+    { name="Joab Leite", email="leitejoab@gmail.com" }
 ]
-license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = [
+    "llm",
+    "ai",
+    "agents",
+    "context",
+    "prompt-engineering",
+    "instructions",
+    "project-context",
+    "lessons-learned",
+    "memory",
+    "retrieval",
+    "context-management",
+    "token-optimization",
+    "mcp",
+    "model-context-protocol",
+    "cli",
+    "developer-tools"
+]
+
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: {{LICENSE_CLASSIFIER}}",
-    "Operating System :: OS Independent"
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed"
 ]
+
+requires-python = ">=3.10"
+
 dependencies = [
+    "cereja",
 ]
+
+[tool.setuptools.dynamic]
+version = {attr = "contextile.__version__"}
+
+# Extras opcionais por framework
+[project.optional-dependencies]
+dev = []
+mcp = ["mcp>=1.0.0"]
 
 [project.urls]
-"Homepage" = "{{GITHUB_URL}}"
-"Documentation" = "{{DOCS_URL}}"
-"Source" = "{{GITHUB_URL}}"
-"Tracker" = "{{GITHUB_URL}}/issues"
+Homepage = "https://github.com/cereja-project/contextile"
+Documentation = "https://github.com/cereja-project/contextile#readme"
+Repository = "https://github.com/cereja-project/contextile"
+Issues = "https://github.com/cereja-project/contextile/issues"
+Changelog = "https://github.com/cereja-project/contextile/releases"
+
+
+[build-system]
+requires = ["setuptools", "wheel", "cereja"]
+build-backend = "setuptools.build_meta"
+
+
+[project.scripts]
+contextile = "contextile.cli:main"
+
+[tool.setuptools.package-data]
+contextile = ["py.typed"]

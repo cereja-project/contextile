@@ -1,51 +1,101 @@
-# {{LIBRARY_NAME}}
+# Contextile
 
-Template base para bibliotecas Python publicadas no [PyPI](https://pypi.org), já configurado para testes automáticos, publicação, documentação via Sphinx e Read the Docs.
+Contextile is a Python toolkit for managing, retrieving, and compacting AI project instructions, lessons learned, and contextual rules for LLM workflows.
 
-## Visão Geral da Arquitetura
+The MVP focuses on a small local workflow:
 
-```mermaid
-graph TD
-    User[Usuário]
-    Package[{{LIBRARY_NAME}}]
-    API[API Pública]
-    Core[Módulo Central]
-    Utils[Utils]
-    Tests[Testes]
-    Docs[Documentação]
+- initialize a `.contextile/` workspace;
+- store durable lessons in JSONL;
+- validate lesson records;
+- search relevant lessons for a task;
+- build a compact Markdown context block for an LLM.
 
-    User -->|Instalação e Uso| Package
-    Package --> API
-    API --> Core
-    API --> Utils
-    Core --> Utils
-    Package --> Tests
-    Package --> Docs
-```
+MCP support is planned as a thin optional layer on top of the core library.
 
-## Instalação
+## Install locally
 
 ```bash
-pip install {{LIBRARY_NAME}}
+pip install -e .
 ```
 
-## Uso Básico
+## Initialize a project
 
-```python
-from package_name import example_function
-
-result = example_function()
-print(result)
+```bash
+contextile init
 ```
 
-## Documentação
+This creates:
 
-Acesse a [documentação completa aqui]({{DOCS_URL}}).
+```text
+.contextile/
+  config.json
+  lessons.jsonl
+  instructions/
+    project-context.md
+    architecture-rules.md
+    code-standards.md
+    validation.md
+```
 
-## Contribuindo
+## Add a lesson
 
-Contribuições são bem-vindas! Veja `CONTRIBUTING.md`.
+```bash
+contextile add-lesson \
+  --id preserve-domain-terms \
+  --when "Editing existing domain terms in code, docs, routes, schemas, enums, or API contracts." \
+  --do "Preserve domain terms exactly as used in the project." \
+  --avoid "Do not translate established domain terms." \
+  --scope "Code, docs, API, DB, routes, enums, UI." \
+  --tags domain,terminology,api,routes,enums
+```
 
-## Licença
+## Search lessons
 
-Licença {{LICENSE_TYPE}}.
+```bash
+contextile search "api validation reports" --limit 5
+```
+
+## Build compact context
+
+```bash
+contextile build-context \
+  --task "Refactor API validation for reports" \
+  --file src/schemas/par/relatorio.py \
+  --tag api \
+  --tag validation \
+  --max-tokens 800
+```
+
+## Validate records
+
+```bash
+contextile validate
+```
+
+## Compact records
+
+```bash
+contextile compact
+```
+
+## Lesson JSONL schema
+
+Each line in `.contextile/lessons.jsonl` is one lesson:
+
+```json
+{"id":"preserve-domain-terms","when":"Editing existing domain terms.","do":"Preserve terms exactly as used.","avoid":"Do not translate established terms.","scope":"Code, docs, API, DB, routes, enums, UI.","tags":["domain","terms","api"]}
+```
+
+Required fields:
+
+- `id`
+- `when`
+- `do`
+- `avoid`
+
+Recommended fields:
+
+- `scope`
+- `tags`
+- `why`
+- `updated_at`

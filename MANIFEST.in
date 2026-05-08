@@ -1,4 +1,4 @@
 include README.md
 include LICENSE
-recursive-include package_name *.py
+recursive-include contextile *.py
 recursive-include docs *.rst
