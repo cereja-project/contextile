@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{LIBRARY_NAME}}"
+version = "{{VERSION}}"
+description = "{{SHORT_DESCRIPTION}}"
+authors = [
+    { name="{{AUTHOR_NAME}}", email="{{AUTHOR_EMAIL}}" }
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: {{LICENSE_CLASSIFIER}}",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+]
+
+[project.urls]
+"Homepage" = "{{GITHUB_URL}}"
+"Documentation" = "{{DOCS_URL}}"
+"Source" = "{{GITHUB_URL}}"
+"Tracker" = "{{GITHUB_URL}}/issues"
