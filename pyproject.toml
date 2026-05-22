@@ -72,6 +72,7 @@ build-backend = "setuptools.build_meta"
 
 [project.scripts]
 contextile = "contextile.cli:main"
+contextile-mcp = "contextile.mcp_server:main"
 
 [tool.setuptools.package-data]
-contextile = ["py.typed"]
+contextile = ["py.typed", "default_rules/*.md"]

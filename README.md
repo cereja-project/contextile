@@ -2,15 +2,19 @@
 
 Contextile is a Python toolkit for managing, retrieving, and compacting AI project instructions, lessons learned, and contextual rules for LLM workflows.
 
+Documentation guides:
+
+- [Rules selection](docs/rules-selection.md)
+- [MCP server](docs/mcp-server.md)
+
 The MVP focuses on a small local workflow:
 
 - initialize a `.contextile/` workspace;
 - store durable lessons in JSONL;
 - validate lesson records;
 - search relevant lessons for a task;
-- build a compact Markdown context block for an LLM.
-
-MCP support is planned as a thin optional layer on top of the core library.
+- build a compact Markdown context block for an LLM;
+- run a thin MCP server layer on top of the same core functions.
 
 ## Install locally
 
@@ -30,6 +34,7 @@ This creates:
 .contextile/
   config.json
   lessons.jsonl
+  project-rules.json
   instructions/
     project-context.md
     architecture-rules.md
@@ -63,8 +68,24 @@ contextile build-context \
   --file src/schemas/par/relatorio.py \
   --tag api \
   --tag validation \
+  --rule-limit 6 \
   --max-tokens 800
 ```
+
+By default, `build-context` selects relevant rules from:
+
+- bundled default rule catalog (ships with Contextile);
+- optional project overrides/extensions in `.aiassistant/rules`.
+
+Selection uses:
+
+- project profiles from `.contextile/project-rules.json`;
+- detected stack/dependencies (`pyproject.toml`, `requirements*.txt`, directories);
+- task text, file hints, and tags.
+
+When rules are selected, they are always included in full (not token-truncated). `--max-tokens` applies to non-rule sections.
+
+Use `--no-rules` to disable rule selection for a call.
 
 ## Validate records
 
@@ -77,6 +98,59 @@ contextile validate
 ```bash
 contextile compact
 ```
+
+## Detect and manage rule profiles
+
+```bash
+contextile detect-rules
+contextile detect-rules --write
+contextile list-rule-scenarios
+contextile apply-rule-scenario --scenario python-core
+contextile apply-rule-scenario --scenario fastapi-api
+contextile select-rules --task "add sqlalchemy pagination" --file src/repositories/orders.py
+contextile validate-rules
+```
+
+`detect-rules --write` updates `.contextile/project-rules.json` (`enable_profiles`) so existing projects can adopt rule selection quickly.
+`apply-rule-scenario` updates `enabled_scenarios` using predefined scenario groups from the bundled catalog plus any project rules.
+
+## Run MCP server
+
+Install MCP extra:
+
+```bash
+pip install -e ".[mcp]"
+```
+
+Run over stdio (default):
+
+```bash
+contextile mcp-server --root .
+```
+
+or:
+
+```bash
+contextile-mcp --root .
+```
+
+Run over HTTP transport:
+
+```bash
+contextile mcp-server --root . --transport streamable-http
+```
+
+Available MCP tools:
+
+- `build_context_tool`
+- `build_agents_md_tool`
+- `add_lesson_tool`
+- `search_lessons_tool`
+- `select_rules_tool`
+- `detect_rules_tool`
+- `validate_rules_tool`
+- `list_rule_scenarios_tool`
+- `apply_rule_scenario_tool`
 
 ## Lesson JSONL schema
 

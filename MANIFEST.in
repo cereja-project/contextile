@@ -1,4 +1,5 @@
 include README.md
 include LICENSE
 recursive-include contextile *.py
+recursive-include contextile/default_rules *.md
 recursive-include docs *.rst
