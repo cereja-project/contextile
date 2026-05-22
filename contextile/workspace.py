@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .rules import DEFAULT_PROJECT_RULES_CONFIG
+
 DEFAULT_CONFIG = {
     "version": 1,
     "lessons_file": "lessons.jsonl",
@@ -36,6 +38,14 @@ def init_workspace(root: str | Path = ".", *, force: bool = False) -> list[Path]
     if force or not lessons_path.exists():
         lessons_path.write_text("", encoding="utf-8")
         created.append(lessons_path)
+
+    project_rules_path = contextile_dir / "project-rules.json"
+    if force or not project_rules_path.exists():
+        project_rules_path.write_text(
+            json.dumps(DEFAULT_PROJECT_RULES_CONFIG, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        created.append(project_rules_path)
 
     for filename, content in DEFAULT_INSTRUCTIONS.items():
         path = instructions_dir / filename
