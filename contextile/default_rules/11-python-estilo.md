@@ -104,6 +104,7 @@ def calcular_desconto(pedido: Pedido, cupom: str | None = None) -> Decimal:
 
 - **Sempre** em funções, métodos e classes públicas (sem `_` prefixo).
 - **Sempre** em módulos públicos (no topo do arquivo).
+- **Sempre** em serviços, repositórios, coletores, parsers e scripts ETL novos ou refatorados, mesmo quando o nome parece claro.
 - **Opcional** em funções privadas curtas e óbvias.
 - **Nunca** repita o que o nome e tipos já dizem:
   ```python
@@ -118,9 +119,13 @@ def calcular_desconto(pedido: Pedido, cupom: str | None = None) -> Decimal:
 - Primeira linha: descreve **o que** faz, no imperativo, em uma frase.
 - Linha em branco, depois detalhes (comportamentos não óbvios, edge cases, exemplos).
 - Documente **comportamento**, não implementação ("aplica 10% para VIP" e não "usa if/else para verificar").
+- Em código de domínio/ETL, documente o **contrato operacional**: origem dos dados, formato esperado, efeitos colaterais no banco, idempotência, regras de soft delete e chaves de conflito.
+- Em refatorações, documente o **ponto central da regra** quando o objetivo for DRY. Ex.: se uma regra de status, upsert ou classificação foi extraída, a docstring deve indicar que aquele é o lugar canônico.
 
 ## Comentários
 
 - Comentários explicam **por quê**, não **o quê**. O código já diz o quê.
+- Use comentários curtos antes de blocos onde a intenção de negócio não aparece no código: compatibilidade entre dialetos, defesa contra dados inconsistentes de API, preservação de contrato legado, ou proteção por `settings.STOP_SYNC`.
+- Prefira docstring para contrato público e comentário inline apenas para decisão local.
 - `# TODO:`, `# FIXME:`, `# HACK:` devem incluir contexto e/ou referência a issue.
 - Comentários desatualizados são pior que ausentes — sempre revise comentários ao mexer no código.

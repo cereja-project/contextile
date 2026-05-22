@@ -52,3 +52,47 @@ for item in huge_iterable:
 ```
 
 Sem comentário, o próximo leitor (incluindo você daqui a 6 meses) vai "consertar" o código quebrando a otimização.
+
+## DRY principle - Don't repeat yourself
+
+### Why DRY Matters
+
+1. Reduces bugs: Fixing something in one place updates it everywhere.
+2. Simplifies updates: When requirements change, you make changes only once.
+3. Boosts clarity: Your codebase becomes easier to read, navigate, and review.
+4. Speeds up development: Less code to write and debug.
+
+### How to Detect DRY Violations
+
+1. Visual similarity: Do you see code blocks that look the same?
+2. Search and Replace: Frequently fixing the same bug in multiple files?
+3. Changing config or logic in many places: Configurable things should live in one place.
+
+### Implementation Steps
+
+1. Identify repeated code, logic, values, or patterns.
+2. Extract them into functions, constants, classes, or modules.
+3. Replace all occurrences with the new abstraction.
+4. Test to ensure nothing is broken.
+5. Document the central place for this logic/value.
+
+### When Not to Over-DRY
+
+1. If abstraction makes the code harder to read (overengineering).
+2. When similar code is only superficially similar but has different intent or requirements.
+3. For scripts that will be used once and then deleted.
+
+### Typical Problems Caused by Not Using DRY
+
+1. Bugs fixed in one place but not another.
+2. Inconsistent user messages and validation.
+3. Slower development and onboarding.
+4. Unmaintainable and tangled codebase.
+
+### Summary
+
+1. DRY keeps your Python code simple, consistent, and maintainable.
+2. Use functions, constants, loops, classes, and modules to eliminate repetition.
+3. Don’t DRY for its own sake — make code clean, not over-complicated.
+4. Always ask: “If I change this, will I need to change it in more than one place?”
+5. Every time you notice repetition — STOP and DRY it up!
